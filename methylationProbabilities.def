@@ -1,0 +1,34 @@
+Bootstrap: docker
+From: rocker/r-ver:latest
+
+%labels
+  Maintainer Your Name <Juliet.Hampstead@radboudumc.nl>
+
+%environment
+
+%post
+  # Install wget
+  apt-get -y update
+  apt install -y wget bzip2 curl zlib1g zlib1g-dev libncurses5-dev libncursesw5-dev liblzma-dev libbz2-dev libcurl4-openssl-dev python3.11 python3-pip
+
+  # Install samtools 1.18
+  wget https://github.com/samtools/samtools/releases/download/1.18/samtools-1.18.tar.bz2
+  tar -xvjf samtools-1.18.tar.bz2
+  cd samtools-1.18
+  make
+  make install
+
+  # Install R packages
+  R -e "install.packages(c('data.table', 'foreach', 'iterators', 'doParallel'), dependencies=TRUE)"
+  
+  # Install pandas
+  pip3 install pandas
+
+%runscript
+  # Define the default command to run when the container starts
+
+%startscript
+  # Define any additional startup commands here
+
+%labels
+  Version 1.0
